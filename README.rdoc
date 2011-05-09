@@ -1,16 +1,22 @@
 = symsym
 
-Description goes here.
+symsym is a tool for Mac OS X that allows to de-symbolize crashlogs.
 
-== Contributing to symsym
- 
-* Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
-* Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
-* Fork the project
-* Start a feature/bugfix branch
-* Commit and push until you are happy with your contribution
-* Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
-* Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
+=== Usage
+symsym will look for a dSYM bundle that matches the bundle identifier, version and short version string found in the crashreport. It will run gdb to desymbolize the addresses in the given crashlog.
+The crashlog can be read from a file or from the Mac OS X pasteboard.
+Output can be to a file, the OS X pasteboard or stdout
+
+Use symsym from the command line:
+  -i read crashreport from given file
+  -o write de-symbolized crashreport to given file
+  -p read crashreport from pasteboard
+  -c write de-symbolized crashreport to pasteboard
+  -d The path where symsym will look for a matching .dSYM bundle - and of course in all subfolders of this path
+
+== Issues/TODO
+
+* Read the architecture from the crashreport
 
 == Copyright
 

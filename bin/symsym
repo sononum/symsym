@@ -1,0 +1,63 @@
+#!/usr/bin/env ruby
+
+$:.unshift File.join(File.dirname(__FILE__), *%w[.. lib])
+
+require 'optparse'
+require 'symsym'
+
+dsymsearchpath = nil
+
+options = {}
+options[:dsymsearchpath] = "."
+options[:reportfile] = nil
+options[:copypasteboard] = false
+options[:outputfile] = nil
+report = nil
+
+optparse = OptionParser.new do|opts|
+  opts.on('-h', '--help', 'Display this screen' ) do
+    puts opts
+    exit
+  end
+  opts.on('-i FILE', "Read crashlog from FILE" ) do |p|
+    options[:reportfile] = p
+  end
+  opts.on('-o FILE', "Write symbolized crashlog to FILE") do |p|
+    options[:outputfile] = p
+  end
+  opts.on('-d FILE', "dSYM Search Path - the path where symsym should look for a matching dSYM bundle. If not given, look in ." ) do |p|
+    options[:dsymsearchpath] = p
+  end
+  opts.on('-p', '--pasteboard', "Use pasteboard content as report input") do
+    report = `pbpaste`
+  end
+  opts.on('-c', '--copypasteboard', "Copy the symbolized crashlog to pasteboard") do
+    options[:copypasteboard] = true
+  end
+end
+
+optparse.parse!
+
+unless report
+  reportfile = options[:reportfile]
+  if reportfile && File.exist?(reportfile)
+    report = File.new(reportfile).read
+  else
+    puts "No input crashlog given. Use --help for usage."
+  end
+end
+
+exit(1) unless report
+
+report = Crashreport.new(report, options[:dsymsearchpath])
+report.symbolicate!
+
+if (options[:copypasteboard])
+  IO.popen('pbcopy', 'r+').puts report.report
+end
+
+if (options[:outputfile])
+  File.new(options[:outputfile], 'w+').puts report.report
+end
+
+puts report.report unless options[:copypasteboard] || options[:outputfile]

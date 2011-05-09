@@ -17,30 +17,16 @@ Jeweler::Tasks.new do |gem|
   gem.name = "symsym"
   gem.homepage = "http://github.com/sononum/symsym"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Crashlog symbolizer for Mac OS X}
+  gem.description = %Q{symsym can be used to symbolize crashlogs from dSYM files}
   gem.email = "ulizurucker@googlemail.com"
   gem.authors = ["Ulrich Zurucker"]
+  gem.executables = ["symsym"]
+  gem.default_executable = 'symsym'
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
 
-require 'rake/testtask'
-Rake::TestTask.new(:test) do |test|
-  test.libs << 'lib' << 'test'
-  test.pattern = 'test/**/test_*.rb'
-  test.verbose = true
-end
-
-require 'rcov/rcovtask'
-Rcov::RcovTask.new do |test|
-  test.libs << 'test'
-  test.pattern = 'test/**/test_*.rb'
-  test.verbose = true
-  test.rcov_opts << '--exclude "gems/*"'
-end
-
-task :default => :test
 
 require 'rake/rdoctask'
 Rake::RDocTask.new do |rdoc|
