@@ -75,9 +75,9 @@ class Crashreport
   def initialize(r, dsymfile=nil)
     @report = r
     @dsymfile = dsymfile
-    @identifier         = @report[/Identifier: (.*)/, 1]
-    @shortversion       = @report[/Version: (.*) \((.*)\)/, 1]
-    @version            = @report[/Version: (.*) \((.*)\)/, 2]
+    @identifier         = @report[/Identifier:\s*(.*)/, 1]
+    @shortversion       = @report[/Version:\s*(.*) \((.*)\)/, 1]
+    @version            = @report[/Version:\s*(.*) \((.*)\)/, 2]
     findDysmFile(dsymfile)
   end
   
